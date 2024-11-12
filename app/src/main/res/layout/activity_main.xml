@@ -8,7 +8,7 @@
 
     <!-- RecyclerView for list of stories -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerVigit branch -M mainew"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
