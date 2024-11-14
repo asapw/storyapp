@@ -12,4 +12,5 @@
     <string name="add_story">Add Story</string>
     <string name="story_name">Story Name</string>
     <string name="story_description">Story Description</string>
+    <string name="no_image_selected">no_image_selected</string>
 </resources>

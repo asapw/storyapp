@@ -25,10 +25,10 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var storyAdapter: StoryAdapter
     private val viewModel: StoryViewModel by viewModels {
         StoryViewModelFactory(Injection.provideRepository(applicationContext))  // Using the custom factory
     }
+    private lateinit var storyAdapter: StoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        storyAdapter = StoryAdapter()
+        storyAdapter = StoryAdapter() // No need to pass context or stories
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = storyAdapter
     }
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         // Observe stories from ViewModel
         viewModel.stories.observe(this, Observer { stories ->
             stories?.let {
-                storyAdapter.submitList(it) // Update the adapter's list
+                storyAdapter.submitList(it) // Now ListStoryItem is passed correctly
             }
         })
 

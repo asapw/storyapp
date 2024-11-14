@@ -1,5 +1,7 @@
 package com.example.storyapp.models
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class StoryResponse(
@@ -15,12 +17,8 @@ data class StoryResponse(
 )
 
 data class ListStoryItem(
-
-	@field:SerializedName("photoUrl")
-	val photoUrl: String? = null,
-
-	@field:SerializedName("createdAt")
-	val createdAt: String? = null,
+	@field:SerializedName("id")
+	val id: String? = null,
 
 	@field:SerializedName("name")
 	val name: String? = null,
@@ -28,12 +26,32 @@ data class ListStoryItem(
 	@field:SerializedName("description")
 	val description: String? = null,
 
-	@field:SerializedName("lon")
-	val lon: Any? = null,
+	@field:SerializedName("photoUrl")
+	val photoUrl: String? = null
+) : Parcelable {
+	constructor(parcel: Parcel) : this(
+		id = parcel.readString(),
+		name = parcel.readString(),
+		description = parcel.readString(),
+		photoUrl = parcel.readString()
+	)
 
-	@field:SerializedName("id")
-	val id: String? = null,
+	override fun writeToParcel(parcel: Parcel, flags: Int) {
+		parcel.writeString(id)
+		parcel.writeString(name)
+		parcel.writeString(description)
+		parcel.writeString(photoUrl)
+	}
 
-	@field:SerializedName("lat")
-	val lat: Any? = null
-)
+	override fun describeContents(): Int = 0
+
+	companion object CREATOR : Parcelable.Creator<ListStoryItem> {
+		override fun createFromParcel(parcel: Parcel): ListStoryItem {
+			return ListStoryItem(parcel)
+		}
+
+		override fun newArray(size: Int): Array<ListStoryItem?> {
+			return arrayOfNulls(size)
+		}
+	}
+}

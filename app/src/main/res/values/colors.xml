@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Primary color for your app -->
+    <color name="colorPrimary">#6200EE</color> <!-- Example: Purple -->
+
+    <!-- Secondary color for your app -->
+    <color name="colorSecondary">#03DAC5</color> <!-- Example: Teal -->
+
+    <!-- Background color for light themes -->
+    <color name="background_color">#FFFFFF</color> <!-- White background -->
+
+    <!-- Text color for dark theme -->
+    <color name="textColorPrimary">#000000</color> <!-- Black text color -->
+
+    <!-- Add more colors here as needed -->
 </resources>

@@ -46,4 +46,3 @@ volley = { group = "com.android.volley", name = "volley", version.ref = "volley"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-

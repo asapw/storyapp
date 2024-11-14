@@ -13,7 +13,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -26,48 +25,40 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     buildFeatures {
         viewBinding = true
     }
 }
 
 dependencies {
+
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.media3.common) // For media pickers
-    // OkHttp for request bodies and media types
+    implementation(libs.androidx.media3.common)
     implementation(libs.okhttp)
-
-    // Retrofit for making HTTP requests, if not already added
     implementation(libs.retrofit.v2110)
-
-    // Retrofit converter for JSON parsing (optional but recommended)
     implementation(libs.converter.gson.v2110)
-
-    implementation (libs.github.glide)
-
-    implementation (libs.androidx.lifecycle.viewmodel.ktx)
-
-    implementation (libs.squareup.retrofit)
-    implementation (libs.converter.gson)
-    implementation (libs.kotlinx.coroutines.android)
-
+    implementation(libs.github.glide)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.datastore.preferences)
-
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.volley)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
