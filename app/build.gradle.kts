@@ -39,6 +39,18 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.media3.common) // For media pickers
+    // OkHttp for request bodies and media types
+    implementation(libs.okhttp)
+
+    // Retrofit for making HTTP requests, if not already added
+    implementation(libs.retrofit.v2110)
+
+    // Retrofit converter for JSON parsing (optional but recommended)
+    implementation(libs.converter.gson.v2110)
+
     implementation (libs.github.glide)
 
     implementation (libs.androidx.lifecycle.viewmodel.ktx)
@@ -55,6 +67,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.volley)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -25,13 +25,15 @@ class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(St
         fun bind(story: ListStoryItem) {
             binding.tvStoryName.text = story.name
             binding.tvStoryDescription.text = story.description
-            Glide.with(binding.root).load(story.photoUrl).into(binding.ivStoryImage)
+            Glide.with(binding.root.context)
+                .load(story.photoUrl)
+                .into(binding.ivStoryImage)
         }
     }
 
     class StoryDiffCallback : DiffUtil.ItemCallback<ListStoryItem>() {
         override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.id == newItem.id // Assuming ID is unique
         }
 
         override fun areContentsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {

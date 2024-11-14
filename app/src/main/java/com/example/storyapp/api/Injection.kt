@@ -8,15 +8,15 @@ import com.example.storyapp.helper.SessionManager
 
 object Injection {
 
-    // This method provides the StoryRepository with the necessary ApiService
+    // This method provides the StoryRepository with the necessary ApiService and authentication token
     fun provideRepository(context: Context): StoryRepository {
-        // Retrieve the token from DataStore (SessionManager)
-        val token = runBlocking { SessionManager.getAuthToken(context).first() } ?: ""
+        // Retrieve the token from DataStore or SharedPreferences
+        val token = runBlocking { SessionManager.getAuthTokenSync(context) } ?: ""
 
-        // Create the ApiService with the token (ensure token is not null)
+        // Ensure token is valid and passed to ApiService
         val apiService = ApiConfig.getApiService(token)
 
-        // Return the repository with the apiService
-        return StoryRepository.getInstance(apiService)
+        return StoryRepository.getInstance(apiService, context)
     }
 }
+
