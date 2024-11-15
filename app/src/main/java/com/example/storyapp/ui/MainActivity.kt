@@ -18,7 +18,6 @@ import com.example.storyapp.helper.SessionManager
 import com.example.storyapp.viemodel.StoryViewModel
 import com.example.storyapp.adapter.StoryAdapter
 import com.example.storyapp.api.Injection
-import com.example.storyapp.models.ListStoryItem
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -38,20 +37,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         lifecycleScope.launch {
-            // Asynchronously get the token from DataStore
-            val token = SessionManager.getAuthToken(this@MainActivity).first()
-            if (token.isNullOrEmpty()) {
-                // Token is invalid or missing, redirect to login
-                navigateToLogin()
-            } else {
-                // Token is valid, proceed with MainActivity setup
-                setupRecyclerView()
-                observeViewModel()
-
-                // Fetch stories from the API
-                viewModel.fetchStories()
+            try {
+                val token = SessionManager.getAuthToken(this@MainActivity).first()
+                if (token.isNullOrEmpty()) {
+                    navigateToWelcome()
+                } else {
+                    setupUI()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@MainActivity, "Error retrieving session. Please log in again.", Toast.LENGTH_SHORT).show()
+                navigateToWelcome()
             }
         }
+
+        // Optional: set the window to edge-to-edge layout
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+    }
+
+    private fun setupUI() {
+        setupRecyclerView()
+        observeViewModel()
 
         // Navigate to AddStoryActivity when the FAB is clicked
         binding.fabAddStory.setOnClickListener {
@@ -59,8 +64,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Optional: set the window to edge-to-edge layout
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        // Fetch stories from the API
+        lifecycleScope.launch {
+            viewModel.fetchStories()
+        }
     }
 
     private fun setupRecyclerView() {
@@ -92,8 +99,8 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun navigateToLogin() {
-        startActivity(Intent(this@MainActivity, LoginActivity::class.java).apply {
+    private fun navigateToWelcome() {
+        startActivity(Intent(this@MainActivity, WelcomeActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         })
         finish() // Close MainActivity
@@ -107,7 +114,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_logout -> {
-                // Clear session and redirect to login
+                // Clear session and redirect to welcome
                 logout()
                 true
             }
@@ -117,16 +124,30 @@ class MainActivity : AppCompatActivity() {
 
     private fun logout() {
         lifecycleScope.launch {
+            // Menghapus data sesi menggunakan SessionManager
             SessionManager.clearSession(this@MainActivity)
+
+            // Menampilkan pesan berhasil logout
             Toast.makeText(this@MainActivity, "Logged out successfully", Toast.LENGTH_SHORT).show()
+
+            // Mengarahkan pengguna ke LoginActivity
             navigateToLogin()
         }
     }
 
+
     // Call fetchStories when the activity is resumed, to refresh the list of stories
     override fun onResume() {
         super.onResume()
-        // Refresh the stories when the activity comes back into view
-        viewModel.fetchStories()
+        lifecycleScope.launch {
+            viewModel.fetchStories()
+        }
     }
+    private fun navigateToLogin() {
+        startActivity(Intent(this@MainActivity, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
+        finish()
+    }
+
 }

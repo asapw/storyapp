@@ -4,9 +4,10 @@ import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.Patterns
 import androidx.appcompat.widget.AppCompatEditText
 
-class PasswordEditText @JvmOverloads constructor(
+class EmailEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : AppCompatEditText(context, attrs) {
 
@@ -16,8 +17,8 @@ class PasswordEditText @JvmOverloads constructor(
         addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if (!isFocusedInternally) {
-                    if (s != null && s.length < 8) {
-                        error = "Password must be at least 8 characters"
+                    if (s != null && s.isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
+                        error = "Please enter a valid email"
                     }
                 }
             }
@@ -30,8 +31,8 @@ class PasswordEditText @JvmOverloads constructor(
         setOnFocusChangeListener { _, hasFocus ->
             isFocusedInternally = hasFocus
             if (!hasFocus) {
-                if (text?.length ?: 0 < 8) {
-                    error = "Password must be at least 8 characters"
+                if (text?.isNotEmpty() == true && !Patterns.EMAIL_ADDRESS.matcher(text).matches()) {
+                    error = "Please enter a valid email"
                 }
             }
         }

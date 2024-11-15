@@ -28,7 +28,7 @@ class RegisterActivity : AppCompatActivity() {
 
             if (validateRegistration(name, email, password)) {
                 // Show the loading indicator
-                binding.progressBar.visibility = android.view.View.VISIBLE
+                binding.progressBarRegister.visibility = android.view.View.VISIBLE
 
                 lifecycleScope.launch {
                     try {
@@ -42,7 +42,7 @@ class RegisterActivity : AppCompatActivity() {
                         val response = apiService.register(name, email, password)
 
                         // Hide the loading indicator
-                        binding.progressBar.visibility = android.view.View.GONE
+                        binding.progressBarRegister.visibility = android.view.View.GONE
 
                         if (response.isSuccessful && response.body() != null && !response.body()!!.error!!) {
                             Toast.makeText(this@RegisterActivity, "Registration successful", Toast.LENGTH_SHORT).show()
@@ -55,7 +55,7 @@ class RegisterActivity : AppCompatActivity() {
                         }
                     } catch (e: Exception) {
                         // Hide the loading indicator on error
-                        binding.progressBar.visibility = android.view.View.GONE
+                        binding.progressBarRegister.visibility = android.view.View.GONE
                         Toast.makeText(this@RegisterActivity, "Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
                     }
                 }

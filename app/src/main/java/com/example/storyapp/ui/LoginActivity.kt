@@ -30,31 +30,26 @@ class LoginActivity : AppCompatActivity() {
                     val token = it.token ?: ""
                     val userId = it.userId ?: ""
                     lifecycleScope.launch {
-                        // Save the token and userId
                         SessionManager.saveAuthToken(this@LoginActivity, token, userId)
-
-                        // Ensure the token is saved before proceeding
-                        val savedToken = SessionManager.getAuthTokenSync(this@LoginActivity)
-                        Log.d("LoginActivity", "Saved Token: $savedToken")
-
-                        if (!savedToken.isNullOrEmpty()) {
-                            Toast.makeText(this@LoginActivity, "Login successful", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                            finish() // Close the LoginActivity
-                        } else {
-                            Toast.makeText(this@LoginActivity, "Token saving failed", Toast.LENGTH_SHORT).show()
-                        }
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finish()
                     }
                 }
             }
             result.onFailure {
+                // Display toast message
                 Toast.makeText(
                     this@LoginActivity,
                     "Login failed: ${it.localizedMessage}",
                     Toast.LENGTH_SHORT
                 ).show()
+
+                // Optionally highlight fields if the issue is with email/password
+                binding.edLoginEmail.error = "Invalid email or password"
+                binding.edLoginPassword.error = "Invalid email or password"
             }
         }
+
 
         binding.btnLogin.setOnClickListener {
             val email = binding.edLoginEmail.text.toString()
@@ -70,13 +65,38 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-
         binding.btnRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
+    // Updated validateLogin function
     private fun validateLogin(email: String, password: String): Boolean {
-        return email.isNotEmpty() && password.length >= 8
+        var isValid = true
+
+        // Validate email
+        if (email.isEmpty()) {
+            binding.edLoginEmail.error = "Email cannot be empty"
+            isValid = false
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.edLoginEmail.error = "Please enter a valid email"
+            isValid = false
+        } else {
+            binding.edLoginEmail.error = null // Clear error if valid
+        }
+
+        // Validate password
+        if (password.isEmpty()) {
+            binding.edLoginPassword.error = "Password cannot be empty"
+            isValid = false
+        } else if (password.length < 8) {
+            binding.edLoginPassword.error = "Password must be at least 8 characters"
+            isValid = false
+        } else {
+            binding.edLoginPassword.error = null // Clear error if valid
+        }
+
+        return isValid
     }
+
 }
