@@ -15,9 +15,9 @@
     <string name="no_image_selected">no_image_selected</string>
 
     <string name="signup">Daftar</string>
-    <string name="message_welcome_page">Mau belajar Android, iOS, Machine Learning, Cloud, Front-End, Back-End, dan bidang IT lainnya? Di Dicoding aja!</string>
-    <string name="title_welcome_page">Selamat datang di Dicoding!</string>
+    <string name="message_welcome_page">Mau belajar macam-macam Biji kopi ?</string>
+    <string name="title_welcome_page">Selamat datang di Coffee App!</string>
     <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
-    <string name="info_login">Sudah siap untuk belajar Coding ?</string>
+    <string name="info_login">Sudah siap untuk belajar Biji kopi ?</string>
     <string name="info_register">ayo mulai registrasi dengan isi data anda!</string>
 </resources>

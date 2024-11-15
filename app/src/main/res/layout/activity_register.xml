@@ -11,9 +11,9 @@
     <!-- ImageView at the top for app logo or registration illustration -->
     <ImageView
         android:id="@+id/imageView_register"
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_height="170dp"
-        android:src="@drawable/image_signup"
+        android:src="@drawable/register_coffee"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

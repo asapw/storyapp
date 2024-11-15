@@ -10,6 +10,6 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appContext = applicationContext // Set the application context
+        appContext = applicationContext
     }
 }

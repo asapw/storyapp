@@ -16,32 +16,25 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize binding
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set up register button listener
         binding.btnRegister.setOnClickListener {
             val name = binding.edRegisterName.text.toString()
             val email = binding.edRegisterEmail.text.toString()
             val password = binding.edRegisterPassword.text.toString()
 
             if (validateRegistration(name, email, password)) {
-                // Show the loading indicator
                 binding.progressBarRegister.visibility = android.view.View.VISIBLE
 
                 lifecycleScope.launch {
                     try {
-                        // Retrieve the token from shared preferences or DataStore
-                        val token = "your_token_here" // Replace with actual token retrieval
+                        val token = "your_token_here"
 
-                        // Get the ApiService with the token
                         val apiService = ApiConfig.getApiService(token)
 
-                        // Make register API call
                         val response = apiService.register(name, email, password)
 
-                        // Hide the loading indicator
                         binding.progressBarRegister.visibility = android.view.View.GONE
 
                         if (response.isSuccessful && response.body() != null && !response.body()!!.error!!) {
@@ -49,12 +42,10 @@ class RegisterActivity : AppCompatActivity() {
                             startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
                             finish()
                         } else {
-                            // Handle error based on response message
                             val errorMessage = response.body()?.message ?: "Registration failed"
                             Toast.makeText(this@RegisterActivity, errorMessage, Toast.LENGTH_SHORT).show()
                         }
                     } catch (e: Exception) {
-                        // Hide the loading indicator on error
                         binding.progressBarRegister.visibility = android.view.View.GONE
                         Toast.makeText(this@RegisterActivity, "Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
                     }

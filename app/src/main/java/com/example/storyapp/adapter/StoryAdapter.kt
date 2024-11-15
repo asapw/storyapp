@@ -1,6 +1,5 @@
 package com.example.storyapp.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.storyapp.databinding.ItemStoryBinding
 import com.example.storyapp.models.ListStoryItem
-import com.example.storyapp.models.Story
 import com.example.storyapp.ui.DetailStoryActivity
 
 class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(StoryDiffCallback()) {
@@ -21,21 +19,19 @@ class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(St
     }
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
-        val storyItem = getItem(position) // this is ListStoryItem
+        val storyItem = getItem(position)
 
         holder.binding.tvStoryName.text = storyItem.name
         holder.binding.tvStoryDescription.text = storyItem.description
 
-        // Use Glide to load the image
         Glide.with(holder.itemView.context)
             .load(storyItem.photoUrl)
             .into(holder.binding.ivStoryImage)
 
-        // Set item click listener
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, DetailStoryActivity::class.java)
-            intent.putExtra("STORY", storyItem)  // Pass the ListStoryItem object
+            intent.putExtra("STORY", storyItem)
             context.startActivity(intent)
         }
     }

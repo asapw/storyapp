@@ -37,14 +37,12 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
             result.onFailure {
-                // Display toast message
                 Toast.makeText(
                     this@LoginActivity,
                     "Login failed: ${it.localizedMessage}",
                     Toast.LENGTH_SHORT
                 ).show()
 
-                // Optionally highlight fields if the issue is with email/password
                 binding.edLoginEmail.error = "Invalid email or password"
                 binding.edLoginPassword.error = "Invalid email or password"
             }
@@ -57,7 +55,6 @@ class LoginActivity : AppCompatActivity() {
 
             if (validateLogin(email, password)) {
                 lifecycleScope.launch {
-                    // Pass email and password, no token needed here
                     loginViewModel.login(email, password)
                 }
             } else {
@@ -70,11 +67,9 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    // Updated validateLogin function
     private fun validateLogin(email: String, password: String): Boolean {
         var isValid = true
 
-        // Validate email
         if (email.isEmpty()) {
             binding.edLoginEmail.error = "Email cannot be empty"
             isValid = false
@@ -82,10 +77,9 @@ class LoginActivity : AppCompatActivity() {
             binding.edLoginEmail.error = "Please enter a valid email"
             isValid = false
         } else {
-            binding.edLoginEmail.error = null // Clear error if valid
+            binding.edLoginEmail.error = null
         }
 
-        // Validate password
         if (password.isEmpty()) {
             binding.edLoginPassword.error = "Password cannot be empty"
             isValid = false
@@ -93,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
             binding.edLoginPassword.error = "Password must be at least 8 characters"
             isValid = false
         } else {
-            binding.edLoginPassword.error = null // Clear error if valid
+            binding.edLoginPassword.error = null
         }
 
         return isValid

@@ -38,21 +38,18 @@ object SessionManager {
             .map { preferences -> preferences[AUTH_TOKEN_KEY] }
     }
 
-    // Clear session
     suspend fun clearSession(context: Context) {
         context.dataStore.edit { preferences -> preferences.clear() }
     }
 
-    // Check if logged in by checking for token
     fun isLoggedIn(context: Context): Flow<Boolean> {
         return getAuthToken(context).map { token -> token != null }
     }
 
-    // Synchronously retrieve token
     fun getAuthTokenSync(context: Context): String? {
         var token: String? = null
         runBlocking {
-            token = getAuthToken(context).first()  // Get the first value from the flow
+            token = getAuthToken(context).first()
         }
         return token
     }

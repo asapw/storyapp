@@ -29,23 +29,19 @@ class AddStoryActivity : AppCompatActivity() {
     private val cameraResult =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success) {
-                binding.ivPhoto.setImageURI(photoUri) // Display captured photo
+                binding.ivPhoto.setImageURI(photoUri)
             } else {
                 Toast.makeText(this, "Camera capture failed", Toast.LENGTH_SHORT).show()
             }
         }
 
-    // Using the Photo Picker API for gallery selection
     private val photoPickerResult = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         if (uri != null) {
-            // Set the photoUri to the selected image URI from gallery
             photoUri = uri
-            binding.ivPhoto.setImageURI(uri) // Display selected image
+            binding.ivPhoto.setImageURI(uri)
 
-            // Log the selected URI for debugging
             Log.d("AddStoryActivity", "Selected photo URI: $photoUri")
         } else {
-            // Handle case where no image was selected
             Toast.makeText(this, "No media selected", Toast.LENGTH_SHORT).show()
         }
     }
@@ -56,7 +52,7 @@ class AddStoryActivity : AppCompatActivity() {
                 openCamera()
             } else {
                 Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
-                openAppSettings() // Prompt user to enable from settings if permanently denied
+                openAppSettings()
             }
         }
 
@@ -65,12 +61,10 @@ class AddStoryActivity : AppCompatActivity() {
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize the StoryRepository using Injection (which will pass the token)
-        val storyRepository = Injection.provideRepository(this) // Use Injection to get the repository
+        val storyRepository = Injection.provideRepository(this)
         val viewModelFactory = StoryViewModelFactory(storyRepository)
         storyViewModel = ViewModelProvider(this, viewModelFactory)[StoryViewModel::class.java]
 
-        // Handle camera and gallery button clicks
         binding.buttonCamera.setOnClickListener {
             checkAndRequestCameraPermission()
         }
@@ -78,25 +72,20 @@ class AddStoryActivity : AppCompatActivity() {
             openGallery()
         }
 
-        // Call addStory on button_add click
         binding.buttonAdd.setOnClickListener {
             val description = binding.edAddDescription.text.toString().trim()
 
-            // Ensure photoUri is not null before proceeding
             if (photoUri != null && description.isNotEmpty()) {
-                // Proceed to add the story with the photoUri and description
                 storyViewModel.addStory(photoUri!!, description)
             } else {
-                // Display error message if photo is not selected or description is empty
                 Toast.makeText(this, "Please select a photo and enter a description", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // Observe the addStorySuccess LiveData to handle success feedback
         storyViewModel.addStorySuccess.observe(this) { isSuccess ->
             if (isSuccess) {
                 Toast.makeText(this, "Story added successfully!", Toast.LENGTH_SHORT).show()
-                finish()  // Go back to the story list screen
+                finish()
             } else {
                 Toast.makeText(this, "Failed to add story", Toast.LENGTH_SHORT).show()
             }
@@ -128,10 +117,8 @@ class AddStoryActivity : AppCompatActivity() {
     }
 
     private fun openGallery() {
-        // Ensure compatibility across different versions of Android
         val pickVisualMediaRequest = PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
 
-        // Launch gallery picker (SDK 33+)
         photoPickerResult.launch(pickVisualMediaRequest)
     }
 

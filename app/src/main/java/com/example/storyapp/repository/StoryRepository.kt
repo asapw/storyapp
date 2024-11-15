@@ -24,23 +24,17 @@ class StoryRepository private constructor(
     private val context: Context
 ) {
 
-    // Fetch stories from the API
     suspend fun getStories(): StoryResponse {
-        // Get the auth token
         val token = SessionManager.getAuthTokenSync(context) ?: throw Exception("Authentication token is missing")
 
-        // Fetch stories using the token
         return withContext(Dispatchers.IO) {
             apiService.getStories("Bearer $token")
         }
     }
 
-    // Add a new story to the API
     suspend fun addNewStory(photoUri: Uri, description: String): AddNewStoryResponse {
-        // Get the auth token
         val token = SessionManager.getAuthTokenSync(context) ?: throw Exception("Authentication token is missing")
 
-        // Proceed with adding the story
         return withContext(Dispatchers.IO) {
             val photoFile = uriToFile(photoUri, context) ?: return@withContext AddNewStoryResponse(error = true, message = "Invalid photo URI")
             Log.d("StoryRepository", "File path: ${photoFile.absolutePath}")
@@ -50,8 +44,7 @@ class StoryRepository private constructor(
             val descriptionBody = description.toRequestBody("text/plain".toMediaTypeOrNull())
 
             try {
-                // Pass token in header for authentication
-                val response = apiService.addNewStory(photoPart, descriptionBody) // The token should already be in the ApiService configuration
+                val response = apiService.addNewStory(photoPart, descriptionBody)
                 Log.d("StoryRepository", "API Response: ${response.message}")
                 return@withContext response
             } catch (e: Exception) {
@@ -68,23 +61,17 @@ class StoryRepository private constructor(
         var file: File? = null
 
         try {
-            // Open the input stream
             val inputStream: InputStream = contentResolver.openInputStream(uri) ?: return null
 
-            // Create a temporary file to store the image
             val tempFile = File(context.cacheDir, "temp_image_${System.currentTimeMillis()}.jpg")
 
-            // Create an output stream to write the file
             val outputStream: OutputStream = FileOutputStream(tempFile)
-
-            // Read the input stream and write to output stream
             val buffer = ByteArray(1024)
             var length: Int
             while (inputStream.read(buffer).also { length = it } > 0) {
                 outputStream.write(buffer, 0, length)
             }
 
-            // Close streams
             inputStream.close()
             outputStream.close()
 

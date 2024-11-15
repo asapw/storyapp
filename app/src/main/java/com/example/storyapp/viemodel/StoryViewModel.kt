@@ -22,7 +22,6 @@ class StoryViewModel(private val storyRepository: StoryRepository) : ViewModel()
     private val _addStorySuccess = MutableLiveData<Boolean>()
     val addStorySuccess: LiveData<Boolean> = _addStorySuccess
 
-    // Fetch stories from the repository
     fun fetchStories() {
         viewModelScope.launch {
             try {
@@ -38,7 +37,6 @@ class StoryViewModel(private val storyRepository: StoryRepository) : ViewModel()
         }
     }
 
-    // Add a new story to the repository
     fun addStory(photoUri: Uri, description: String) {
         viewModelScope.launch {
             try {

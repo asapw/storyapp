@@ -17,7 +17,6 @@ class LoginViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val loginRequest = LoginRequest(email, password)
-                // Now no token is passed here
                 val response = ApiConfig.getApiService().login(loginRequest)
 
                 if (response.isSuccessful && response.body() != null && !response.body()!!.error!!) {

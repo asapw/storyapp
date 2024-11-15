@@ -14,17 +14,14 @@ class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Check if user is logged in
         val isLoggedIn = runBlocking { SessionManager.getAuthTokenSync(this@WelcomeActivity) != null }
 
         if (isLoggedIn) {
-            // If logged in, navigate to MainActivity
             startActivity(Intent(this, MainActivity::class.java))
-            finish() // Prevent going back to WelcomeActivity
+            finish()
             return
         }
 
-        // Otherwise, show WelcomeActivity
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
